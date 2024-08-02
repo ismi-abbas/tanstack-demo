@@ -6,6 +6,7 @@ import { asc, desc, eq } from 'drizzle-orm'
 import { cors } from 'hono/cors'
 
 const app = new Hono()
+
 app.use(
 	'*',
 	cors({
@@ -13,36 +14,65 @@ app.use(
 	}),
 )
 
-app.get('/', c => c.text('Hello Hono!'))
-
 app
+	.get('/', c => c.text('Hello Hono!'))
 	.get('/tasks', async c => {
-		const page = c.req.query('page')
-		const limit = c.req.query('limit')
+		const page = parseInt(c.req.query('page') || '0')
+		const limit = 10 // Fixed limit of 10 items per page
 
-		console.log(page, limit)
-		// make it slower
-		// await new Promise(resolve => setTimeout(resolve, 3000))
+		try {
+			const allTasks = await db
+				.select()
+				.from(tasks)
+				.limit(limit)
+				.offset(page * limit)
+			// .orderBy(asc(tasks.taskId))
 
-		const allTasks = await db
-			.select()
-			.from(tasks)
-			.limit(parseInt(limit || '10'))
-			.offset(parseInt(page || '10') * parseInt(limit))
-			.orderBy(asc(tasks.taskId))
+			const hasMoreCheck = await db
+				.select()
+				.from(tasks)
+				.limit(1)
+				.offset((page + 1) * limit)
 
-		return c.json(allTasks)
+			const total = await db.select().from(tasks)
+			const totalPages = Math.ceil(total.length / limit)
+
+			// Simulate slower response
+			await new Promise(resolve => setTimeout(resolve, 1000))
+
+			return c.json({
+				tasks: allTasks,
+				hasMore: hasMoreCheck.length > 0,
+				totalPages,
+			})
+		} catch (error) {
+			return c.json({ error: 'Failed to fetch tasks' })
+		}
 	})
 	.get('/tasks/:priority', async c => {
 		const priority = c.req.param('priority')
+		const page = parseInt(c.req.query('page') || '0')
+		const limit = 10
+
 		if (priority === 'High') {
 			throw new Error('Server Error')
 		}
-		// make it slower
-		await new Promise(resolve => setTimeout(resolve, 3000))
-		const allTasks = await db.select().from(tasks).where(eq(tasks.priority, priority)).orderBy(desc(tasks.taskId))
 
-		return c.json(allTasks)
+		let results = []
+
+		if (page > 0) {
+			results = await db
+				.select()
+				.from(tasks)
+				.where(eq(tasks.priority, priority))
+				.limit(limit)
+				.offset(page * limit)
+				.orderBy(asc(tasks.createdAt))
+		} else {
+			results = await db.select().from(tasks).where(eq(tasks.priority, priority))
+		}
+
+		return c.json(results)
 	})
 	.post('/task', async c => {
 		try {

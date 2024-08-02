@@ -21,8 +21,8 @@ export default function PriorityWithTanstack({
         throw new Error("Failed to fetch tasks " + error);
       }
     },
-    retry: 1,
     staleTime: 3 * 60 * 1000,
+    enabled: !!priority,
   });
 
   return (

@@ -1,19 +1,23 @@
 import { SelectTask } from '@server/src/db/schema'
 import { queryOptions } from '@tanstack/react-query'
 
-export async function fetchGroups(priority: string): Promise<SelectTask[]> {
+export async function fetchGroups(priority?: string, page?: string, limit?: string): Promise<SelectTask[]> {
 	try {
-		const res = await fetch('http://localhost:3000/tasks/' + priority)
+		const url = new URL(`http://localhost:3000/tasks/${priority}`)
+		if (page) {
+			url.searchParams.append('page', page)
+		} else if (limit) {
+			url.searchParams.append('limit', limit)
+		}
+
+		const res = await fetch(url)
 
 		if (!res.ok) {
 			throw new Error('Network response was not ok')
 		}
 
 		const result = await res.json()
-		return {
-			...result,
-			hasMore: result.length < 10,
-		}
+		return result
 	} catch {
 		throw new Error('Failed to fetch tasks')
 	}
@@ -22,7 +26,7 @@ export async function fetchGroups(priority: string): Promise<SelectTask[]> {
 export const fetchTasksOptions = (priority: string) => {
 	return queryOptions({
 		queryKey: ['tasks', priority],
-		queryFn: () => fetchGroups(priority),
-		staleTime: 5 * 1000,
+		queryFn: () => fetchGroups(priority, '1', '10'),
+		staleTime: 5 * 1000 * 60,
 	})
 }

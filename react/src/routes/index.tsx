@@ -3,10 +3,10 @@ import { Fragment, useState } from "react";
 import SimpleFetching from "../components/category";
 
 export const IndexComponent = () => {
-  const [priority, setPriority] = useState("Low");
+  const [priority, setPriority] = useState("low");
 
   const handlePriority = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setPriority(e.currentTarget.textContent || "");
+    setPriority(e.currentTarget.textContent?.toLowerCase() || "");
   };
 
   return (

@@ -24,7 +24,7 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@server/*": ["./server/*"]
+      "@server/*": ["../server/*"]
     }
   },
   "include": ["src", "./server"]
