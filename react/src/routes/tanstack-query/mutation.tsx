@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { InsertTask } from '@server/src/db/schema'
 import { useState } from 'react'
@@ -8,6 +8,8 @@ type NewTask = Omit<InsertTask, 'taskId'>
 
 export default function MutationSample() {
 	const [task, setTask] = useState<NewTask>({})
+
+	const queryClient = useQueryClient()
 
 	const handleTaskChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof NewTask) => {
 		setTask(prev => ({
@@ -40,6 +42,11 @@ export default function MutationSample() {
 				throw new Error('Failed to add task ' + error)
 			}
 		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: fetchTasksOptions('low').queryKey,
+			})
+		}
 	})
 
 	const handleAddTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -80,8 +87,6 @@ export default function MutationSample() {
 								...prev,
 								priority: e.target.value,
 							}))
-
-							console.log(e.target.value)
 						}}>
 						<option value="high">High</option>
 						<option value="medium">Medium</option>
@@ -105,7 +110,7 @@ export default function MutationSample() {
 						{data.map(todo => (
 							<div key={todo.taskId} className="border">
 								ID:<span className="font-bold">{todo.taskId}</span> {todo.taskName} - {todo.priority}
-								<div>{todo.createdAt}</div>
+								<div>{new Date(todo.createdAt).toDateString()}</div>
 							</div>
 						))}
 					</div>

@@ -26,7 +26,7 @@ export async function fetchGroups(priority?: string, page?: string, limit?: stri
 export const fetchTasksOptions = (priority: string) => {
 	return queryOptions({
 		queryKey: ['tasks', priority],
-		queryFn: () => fetchGroups(priority, '1', '10'),
+		queryFn: () => fetchGroups(priority),
 		staleTime: 5 * 1000 * 60,
 	})
 }
