@@ -16,6 +16,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as TanstackQueryIndexImport } from './routes/tanstack-query/index'
 import { Route as TanstackQueryPaginatedQueryImport } from './routes/tanstack-query/paginated-query'
 import { Route as TanstackQueryMutationImport } from './routes/tanstack-query/mutation'
+import { Route as TanstackQueryInfiniteQueryImport } from './routes/tanstack-query/infinite-query'
 
 // Create/Update Routes
 
@@ -45,6 +46,13 @@ const TanstackQueryMutationRoute = TanstackQueryMutationImport.update({
   getParentRoute: () => TanstackQueryRoute,
 } as any)
 
+const TanstackQueryInfiniteQueryRoute = TanstackQueryInfiniteQueryImport.update(
+  {
+    path: '/infinite-query',
+    getParentRoute: () => TanstackQueryRoute,
+  } as any,
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -62,6 +70,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/tanstack-query'
       preLoaderRoute: typeof TanstackQueryImport
       parentRoute: typeof rootRoute
+    }
+    '/tanstack-query/infinite-query': {
+      id: '/tanstack-query/infinite-query'
+      path: '/infinite-query'
+      fullPath: '/tanstack-query/infinite-query'
+      preLoaderRoute: typeof TanstackQueryInfiniteQueryImport
+      parentRoute: typeof TanstackQueryImport
     }
     '/tanstack-query/mutation': {
       id: '/tanstack-query/mutation'
@@ -92,6 +107,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   TanstackQueryRoute: TanstackQueryRoute.addChildren({
+    TanstackQueryInfiniteQueryRoute,
     TanstackQueryMutationRoute,
     TanstackQueryPaginatedQueryRoute,
     TanstackQueryIndexRoute,
@@ -116,10 +132,15 @@ export const routeTree = rootRoute.addChildren({
     "/tanstack-query": {
       "filePath": "tanstack-query.tsx",
       "children": [
+        "/tanstack-query/infinite-query",
         "/tanstack-query/mutation",
         "/tanstack-query/paginated-query",
         "/tanstack-query/"
       ]
+    },
+    "/tanstack-query/infinite-query": {
+      "filePath": "tanstack-query/infinite-query.tsx",
+      "parent": "/tanstack-query"
     },
     "/tanstack-query/mutation": {
       "filePath": "tanstack-query/mutation.tsx",
