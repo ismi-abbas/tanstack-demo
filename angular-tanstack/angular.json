@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-tanstack:build:production"
+              "buildTarget": "angular-tanstack:build:production"
             },
             "development": {
-              "browserTarget": "angular-tanstack:build:development"
+              "buildTarget": "angular-tanstack:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-tanstack:build"
+            "buildTarget": "angular-tanstack:build"
           }
         },
         "test": {
