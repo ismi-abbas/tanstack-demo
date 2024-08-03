@@ -32,7 +32,6 @@ export default function MutationSample() {
 		mutationKey: ["addTask"],
 		mutationFn: async (task: NewTask) => {
 			try {
-				``;
 				const response = await fetch("http://localhost:3000/task", {
 					method: "POST",
 					headers: {

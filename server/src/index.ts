@@ -16,7 +16,13 @@ app
 		const currentPage = parseInt(c.req.query("page") || "0");
 		const pageSize = parseInt(c.req.query("limit") || "10");
 		const priority = c.req.query("priority");
+		
+		// delay response
+		await new Promise((resolve) => setTimeout(resolve, 2000));
 
+		if (priority === 'high') {
+			throw new Error('High priority tasks are not allowed');
+		}
 		try {
 			let allTasks = await db
 				.select()
