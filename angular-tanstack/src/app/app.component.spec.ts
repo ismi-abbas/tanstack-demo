@@ -1,29 +1,51 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { AppComponent } from "./app.component";
 
-describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
-    declarations: [AppComponent]
-  }));
+describe("AppComponent", () => {
+	let component: AppComponent;
+	let fixture: ComponentFixture<AppComponent>;
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [AppComponent],
+		}).compileComponents();
 
-  it(`should have as title 'angular-tanstack'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-tanstack');
-  });
+		const fixture = TestBed.createComponent(AppComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('angular-tanstack app is running!');
-  });
+	it("should create the app", () => {
+		const fixture = TestBed.createComponent(AppComponent);
+		const app = fixture.componentInstance;
+		expect(app).toBeTruthy();
+	});
+
+	it("should have a nav element", () => {
+		const navElement = fixture.nativeElement.querySelector("nav");
+		expect(navElement).toBeTruthy();
+	});
+
+	it("should have three navigation links", () => {
+		const links = fixture.nativeElement.querySelectorAll("nav a");
+		expect(links.length).toBe(3);
+	});
+
+	it("should have correct routerLinks for navigation", () => {
+		const links = fixture.nativeElement.querySelectorAll("nav a");
+		expect(links[0].getAttribute("routerLink")).toBe("/home");
+		expect(links[1].getAttribute("routerLink")).toBe("/about");
+		expect(links[2].getAttribute("routerLink")).toBe("/contact");
+	});
+
+	it("should have a main element", () => {
+		const mainElement = fixture.nativeElement.querySelector("main");
+		expect(mainElement).toBeTruthy();
+	});
+
+	it("should have a router-outlet in the main element", () => {
+		const routerOutlet =
+			fixture.nativeElement.querySelector("main router-outlet");
+		expect(routerOutlet).toBeTruthy();
+	});
 });

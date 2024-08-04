@@ -1,0 +1,17 @@
+<h1 class="text-2xl font-bold">User works!</h1>
+
+<div>
+  @if (isServerRunning) {
+  <span>Yes, the server is running</span>
+  } @else {
+  <span>No, the server is not running</span>
+  }
+</div>
+
+<div data="asda">
+  @for(user of users; track user.id) {
+  <p>{{ user.name }}</p>
+  }
+</div>
+
+<button class="btn" data-btn-text="Click Me"></button>
