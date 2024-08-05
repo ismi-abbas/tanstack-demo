@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import jwt from 'jsonwebtoken';
 
 @Injectable({
   providedIn: 'root',
@@ -88,13 +87,5 @@ export class AuthService {
       ],
     ];
     return emailParts.join('');
-  }
-
-  generateRandomToken() {
-    const payload = {
-      name: this.generateRandomName(),
-      email: this.generateRandomEmail(),
-    };
-    return jwt.sign(payload, 'secretKey', { expiresIn: '1h' });
   }
 }
