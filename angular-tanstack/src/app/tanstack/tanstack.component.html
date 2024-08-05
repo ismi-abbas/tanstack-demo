@@ -1,22 +1,21 @@
 <div>
-  <button (click)="onAddTodo()">Add Todo</button>
 
-  @if (query.isError()) {
-  <div>
-    <p>Error: {{ query.error() }}</p>
-  </div>
-  }
-
-  @if (query.isLoading()) {
-  <div>
-    <p>Loading...</p>
-  </div>
-  }
+  <form action="" [formGroup]="noteForm" (ngSubmit)="onAddTodo()">
+    <input class="w-80" hlmInput placeholder='Email' type='email' />
+  </form>
 
 
-  <ul>
-    @for (todo of query.data(); track todo.title) {
-    <li>{{ todo.title }}</li>
+  <hlm-caption>Your Todo List</hlm-caption>
+  <hlm-table class="w-full min-w-[400px]">
+    <hlm-trow class="flex">
+      <hlm-th class="flex-1">Todo</hlm-th>
+      <hlm-th class="w-52">Last Update</hlm-th>
+    </hlm-trow>
+    @for (todo of query.data(); track todo.id) {
+    <hlm-trow class="flex">
+      <hlm-td class="flex-1"> {{ todo.note }}</hlm-td>
+      <hlm-td class="w-52">{{ todo.createdAt }}</hlm-td>
+    </hlm-trow>
     }
-  </ul>
+  </hlm-table>
 </div>

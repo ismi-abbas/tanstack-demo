@@ -1,64 +1,67 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, Injectable } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   injectMutation,
   injectQuery,
   injectQueryClient,
 } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
+import { NoteService } from '../services/database.service';
+import {
+  HlmCaptionComponent,
+  HlmTableComponent,
+  HlmTdComponent,
+  HlmThComponent,
+  HlmTrowComponent,
+} from '@spartan-ng/ui-table-helm';
+import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { NewNote } from '../../db/schema';
 
 @Component({
   selector: 'app-tanstack',
   standalone: true,
-  imports: [],
+  imports: [
+    HlmCaptionComponent,
+    HlmTableComponent,
+    HlmTdComponent,
+    HlmThComponent,
+    HlmTrowComponent,
+    HlmLabelDirective,
+    ReactiveFormsModule,
+  ],
   templateUrl: './tanstack.component.html',
 })
 export class TanstackComponent {
-  todoService = inject(TodoService);
+  constructor(private noteService: NoteService, private form: FormBuilder) {}
   queryClient = injectQueryClient();
 
+  noteForm = new FormGroup({
+    note: new FormControl('', Validators.required),
+    date: new FormControl(new Date(), Validators.required),
+  });
+
   query = injectQuery(() => ({
-    queryKey: ['todos'],
-    queryFn: () => this.todoService.getTodos(),
+    queryKey: ['notes'],
+    queryFn: async () => this.noteService.getNotes(),
+    staleTime: 1000 * 60 * 5,
   }));
 
   mutation = injectMutation((client) => ({
-    mutationFn: (todo: Todo) => this.todoService.addTodo(todo),
+    mutationFn: (todo: NewNote) => this.noteService.addNewNote(todo),
     onSuccess: () => {
-      // Invalidate and refetch by using the client directly
       client.invalidateQueries({ queryKey: ['todos'] });
-
-      // OR use the queryClient that is injected into the component
-      // this.queryClient.invalidateQueries({ queryKey: ['todos'] })
     },
   }));
 
   onAddTodo() {
-    this.mutation.mutate({
-      id: Date.now().toString(),
-      title: 'Do Laundry',
+    this.mutation.mutateAsync({
+      note: this.noteForm.get('note')?.value || '',
+      createdAt: this.noteForm.get('date')?.value || new Date(),
     });
   }
-}
-
-@Injectable({ providedIn: 'root' })
-export class TodoService {
-  private http = inject(HttpClient);
-
-  getTodos(): Promise<Todo[]> {
-    return lastValueFrom(
-      this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
-    );
-  }
-
-  addTodo(todo: Todo): Promise<Todo> {
-    return lastValueFrom(
-      this.http.post<Todo>('https://jsonplaceholder.typicode.com/todos', todo)
-    );
-  }
-}
-
-interface Todo {
-  id: string;
-  title: string;
 }

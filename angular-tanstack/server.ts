@@ -57,4 +57,4 @@ function run(): void {
   });
 }
 
-run(); // replace with vercel serverless
+//run(); // replace with vercel serverless
