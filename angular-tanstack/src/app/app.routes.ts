@@ -2,6 +2,7 @@ import type { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SpartanComponent } from './spartan/spartan.component';
 import { UserComponent } from './user/user.component';
+import { TanstackComponent } from './tanstack/tanstack.component';
 
 export const routes: Routes = [
   {
@@ -19,5 +20,10 @@ export const routes: Routes = [
     title: 'User',
     component: UserComponent,
     loadChildren: () => import('./user/user.routes').then((r) => r.userRoutes),
+  },
+  {
+    path: 'tanstack',
+    title: 'Tanstack',
+    component: TanstackComponent,
   },
 ];

@@ -1,0 +1,22 @@
+<div>
+  <button (click)="onAddTodo()">Add Todo</button>
+
+  @if (query.isError()) {
+  <div>
+    <p>Error: {{ query.error() }}</p>
+  </div>
+  }
+
+  @if (query.isLoading()) {
+  <div>
+    <p>Loading...</p>
+  </div>
+  }
+
+
+  <ul>
+    @for (todo of query.data(); track todo.title) {
+    <li>{{ todo.title }}</li>
+    }
+  </ul>
+</div>
