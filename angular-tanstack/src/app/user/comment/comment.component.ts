@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-	selector: "comments",
-	standalone: true,
-	imports: [],
-	templateUrl: "./comment.component.html",
+  selector: 'comments',
+  standalone: true,
+  imports: [],
+  templateUrl: './comment.component.html',
 })
 export class CommentComponent {}

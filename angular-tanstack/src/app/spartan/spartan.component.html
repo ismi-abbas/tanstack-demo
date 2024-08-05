@@ -1,8 +1,14 @@
 <p>spartan works!</p>
 
-<button hlmBtn [variant]="'default'">Button</button>
+<div class="flex gap-4">
+  <button hlmBtn variant="default">Button</button>
+  <button hlmBtn variant="destructive">Button</button>
+  <button hlmBtn variant="outline">Button</button>
+  <button hlmBtn variant="ghost">Button</button>
+  <button hlmBtn variant="link">Button</button>
+</div>
 
-<section hlmCard class="mt-4">
+<section hlmCard class="mt-4 theme-rose">
   <div hlmCardHeader>
     <h3 hlmCardTitle>Notifications</h3>
     <p hlmCardDescription>You have 3 unread notifications</p>
