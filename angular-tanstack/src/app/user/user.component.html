@@ -1,17 +1,99 @@
-<h1 class="text-2xl font-bold">User works!</h1>
+<h1 class="text-2xl font-bold">User Component</h1>
 
-<div>
-  @if (isServerRunning) {
-  <span>Yes, the server is running</span>
-  } @else {
-  <span>No, the server is not running</span>
-  }
-</div>
+<div hobby="Playing"></div>
 
-<div data="asda">
-  @for(user of users; track user.id) {
-  <p>{{ user.name }}</p>
-  }
-</div>
+<section class="flex flex-col gap-4">
+  <div>
+    @if (isServerRunning) {
+    <span>Yes, the server is running</span>
+    } @else {
+    <span>No, the server is not running</span>
+    }
+  </div>
 
-<button class="btn" data-btn-text="Click Me"></button>
+  <div>
+    <span class="text-xl font-bold">Looping </span>
+    <div data="asda">
+      @for(user of users; track user.id) {
+      <p>{{ user.name }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="flex gap-5">
+    <button class="button-56" (click)="addItem()">Add element to parent</button>
+
+    <button
+      (click)="greet()"
+      class="flex items-center justify-center px-6 py-3 text-base font-sans text-gray-900 bg-[#fee6e3] border-2 border-gray-900 rounded-lg cursor-pointer max-w-full relative select-none touch-action-manipulation hover:outline-none active:bg-[#ffdeda] active:outline-none md:px-10 group"
+    >
+      <span class="relative z-10">Greet!</span>
+      <span
+        class="absolute inset-0 w-full h-full bg-gray-900 rounded-lg -z-10 translate-x-2 translate-y-2 transition-transform duration-200 ease-out group-hover:translate-x-0 group-hover:translate-y-0"
+      ></span>
+    </button>
+  </div>
+
+  <div>
+    <h1 class="text-xl font-bold">Events</h1>
+    There's a secret message for you,
+    <span
+      class="hover:underline hover:cursor-pointer"
+      (mouseover)="onMouseOver()"
+    >
+      hover to reveal
+    </span>
+    :
+    {{ message }}
+  </div>
+
+  <div>
+    <h3 class="mt-5">Content Editable</h3>
+    <div [contentEditable]="isEditable" class="border"></div>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-bold">&#64;Input Binding</h3>
+    <p>Input from parent component passed into child</p>
+    <p>My hobby is <{{ hobby }}></p>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-bold">&#64;Defer views</h3>
+
+    <div>
+      <h1>How I feel about Angular</h1>
+      <article>
+        <p>
+          Angular is my favorite framework, and this is why. Angular has the
+          coolest deferrable view feature that makes defer loading content the
+          easiest and most ergonomic it could possibly be. The Angular community
+          is also filled with amazing contributors and experts that create
+          excellent content. The community is welcoming and friendly, and it
+          really is the best community out there.
+        </p>
+      </article>
+
+      @defer (on viewport) {
+      <comments />
+      } @placeholder {
+      <p>Future comments</p>
+      } @loading (minimum 2s) {
+      <p>Loading comments...</p>
+      }
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-bold">Optimizing Images</h3>
+
+    <li>
+      Static Image:
+      <img ngSrc="/assets/logo.svg" alt="Angular logo" width="32" height="32" />
+    </li>
+    <li>
+      Dynamic Image:
+      <img [ngSrc]="logoUrl" [alt]="logoAlt" width="32" height="32" />
+    </li>
+  </div>
+</section>

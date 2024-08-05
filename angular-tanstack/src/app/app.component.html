@@ -1,9 +1,21 @@
 <nav class="flex gap-10 justify-center p-4 border-b">
   <a routerLink="/home">Home</a>
-  <a routerLink="/about">About</a>
-  <a routerLink="/contact">Contact</a>
+  <a routerLink="/user">User</a>
+  <a routerLink="/spartan">Spartan</a>
 </nav>
 
 <main class="flex w-screen px-10 mt-4 flex-col">
-  <router-outlet />
+  <div class="py-4">
+    <h1 class="text-2xl font-bold">Parent's Component</h1>
+
+    <div>
+      <p>🐢 all the way down {{ items.length }}</p>
+    </div>
+  </div>
+
+  <div class="inline-flex h-1 bg-black"></div>
+
+  <div class="py-4">
+    <router-outlet />
+  </div>
 </main>

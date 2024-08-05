@@ -1,15 +1,16 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { CommentComponent } from "./comment/comment.component";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
 	selector: "app-user",
 	standalone: true,
-	imports: [],
+	imports: [CommentComponent, NgOptimizedImage],
 	templateUrl: "./user.component.html",
-	styleUrl: "./user.component.css",
 })
 export class UserComponent {
 	isServerRunning = true;
-
+	message = "";
 	users = [
 		{ id: 0, name: "Sarah" },
 		{ id: 1, name: "Amy" },
@@ -17,4 +18,23 @@ export class UserComponent {
 		{ id: 3, name: "Jessica" },
 		{ id: 4, name: "Poornima" },
 	];
+	isEditable = true;
+	logoUrl = "/assets/logo.svg";
+	logoAlt = "Angular logo";
+	username = "youngTech";
+
+	@Input() hobby = "Coding";
+	@Output() addItemEvent = new EventEmitter<string>();
+
+	addItem() {
+		this.addItemEvent.emit("🐢");
+	}
+
+	greet() {
+		alert("Hello, welcome to Angular!");
+	}
+
+	onMouseOver() {
+		this.message = "Way to go 🚀";
+	}
 }
